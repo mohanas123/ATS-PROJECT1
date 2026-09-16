@@ -1,0 +1,7 @@
+{
+  "name": "ResumeIQ – AI ATS Resume Checker",
+  "description": "Optimize your resume and improve your opportunities with real-time ATS compatibility scoring, keyword matching, and actionable AI recommendations.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
+
