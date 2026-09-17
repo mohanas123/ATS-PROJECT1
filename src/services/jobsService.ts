@@ -243,7 +243,9 @@ export async function searchJobs(
       searchQuery = deriveJobQueryFromResume(resumeText);
     }
 
-    const url = new URL('/api/jobs', window.location.origin);
+  const url = new URL(
+  'https://resumeiq-backend-two.vercel.app/api/jobs'
+);
 
     if (searchQuery) {
       url.searchParams.set('what', searchQuery);
