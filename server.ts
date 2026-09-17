@@ -8,11 +8,20 @@ import { getJobs } from './server/jobsApi';
 dotenv.config();
 
 const app = express();
+const allowedOrigins = new Set([
+  'https://smiilemart.in',
+  'https://www.smiilemart.in',
+  'https://smilema.in',
+  'http://localhost:5173',
+  'http://localhost:5174',
+]);
+
 app.use((req, res, next) => {
-  res.header(
-    'Access-Control-Allow-Origin',
-    'https://smilema.in'
-  );
+  const origin = req.header('Origin');
+  if (origin && allowedOrigins.has(origin)) {
+    res.header('Access-Control-Allow-Origin', origin);
+    res.header('Vary', 'Origin');
+  }
   res.header(
     'Access-Control-Allow-Methods',
     'GET,POST,PUT,DELETE,OPTIONS'

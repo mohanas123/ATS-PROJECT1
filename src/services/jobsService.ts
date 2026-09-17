@@ -243,9 +243,14 @@ export async function searchJobs(
       searchQuery = deriveJobQueryFromResume(resumeText);
     }
 
-  const url = new URL(
-  'https://resumeiq-backend-two.vercel.app/api/jobs'
-);
+    /* In development, always go through Vite's same-origin proxy. This
+     * prevents browser CORS checks and routes the request to localhost:3005.
+     * A deployed frontend may override the production API URL if needed. */
+    const jobsApiUrl = import.meta.env.DEV
+      ? '/api/jobs'
+      : import.meta.env.VITE_JOBS_API_URL?.trim() ||
+        'https://resumeiq-backend-two.vercel.app/api/jobs';
+    const url = new URL(jobsApiUrl, window.location.origin);
 
     if (searchQuery) {
       url.searchParams.set('what', searchQuery);

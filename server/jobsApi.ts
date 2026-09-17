@@ -13,6 +13,9 @@ type JobsApiResponse = {
 };
 
 const supportedCountries = new Set(['at', 'au', 'be', 'br', 'ca', 'ch', 'de', 'es', 'fr', 'gb', 'in', 'it', 'mx', 'nl', 'nz', 'pl', 'sg', 'us', 'za']);
+const JOBS_CACHE_TTL_MS = 60_000;
+const jobsCache = new Map<string, { expiresAt: number; result: JobsApiResponse }>();
+const inFlightRequests = new Map<string, Promise<JobsApiResponse>>();
 
 const text = (value: unknown) => (typeof value === 'string' ? value : '');
 const cleanHtml = (value: unknown) => text(value).replace(/<[^>]*>/g, ' ').replace(/\s+/g, ' ').trim();
@@ -75,7 +78,7 @@ function toJob(source: Record<string, unknown>): JobOpportunity {
   };
 }
 
-export async function getJobs(search: URLSearchParams, credentials: { appId?: string; appKey?: string }): Promise<JobsApiResponse> {
+async function getJobsUncached(search: URLSearchParams, credentials: { appId?: string; appKey?: string }): Promise<JobsApiResponse> {
   const appId = credentials.appId?.trim();
   const appKey = credentials.appKey?.trim();
   const page = Math.max(1, Number.parseInt(search.get('page') || '1', 10) || 1);
@@ -116,4 +119,46 @@ export async function getJobs(search: URLSearchParams, credentials: { appId?: st
     console.error('Adzuna request failed:', error);
     return { success: false, isConfigured: true, source: 'adzuna', total: 0, page, resultsPerPage, jobs: [], error: 'Unable to contact the job provider. Please try again later.' };
   }
+}
+
+function cacheKey(search: URLSearchParams): string {
+  return [...search.entries()]
+    .sort(([left], [right]) => left.localeCompare(right))
+    .map(([key, value]) => `${key}=${value}`)
+    .join('&');
+}
+
+/**
+ * Avoid duplicate provider calls for the same search. In particular, React
+ * Strict Mode performs the initial effect twice during local development.
+ */
+export async function getJobs(search: URLSearchParams, credentials: { appId?: string; appKey?: string }): Promise<JobsApiResponse> {
+  const key = cacheKey(search);
+  const cached = jobsCache.get(key);
+
+  if (cached && cached.expiresAt > Date.now()) {
+    return cached.result;
+  }
+
+  const inFlight = inFlightRequests.get(key);
+  if (inFlight) {
+    return inFlight;
+  }
+
+  const request = getJobsUncached(search, credentials)
+    .then((result) => {
+      if (result.success) {
+        jobsCache.set(key, {
+          expiresAt: Date.now() + JOBS_CACHE_TTL_MS,
+          result,
+        });
+      }
+      return result;
+    })
+    .finally(() => {
+      inFlightRequests.delete(key);
+    });
+
+  inFlightRequests.set(key, request);
+  return request;
 }
