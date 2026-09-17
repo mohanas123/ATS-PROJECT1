@@ -1,5 +1,5 @@
 import type { IncomingMessage, ServerResponse } from 'node:http';
-import { getJobs } from '../server/jobsApi.ts';
+import { getJobs } from '../server/jobsApi.js';
 
 const allowedOrigins = new Set([
   process.env.ALLOWED_ORIGIN,
