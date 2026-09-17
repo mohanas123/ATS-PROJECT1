@@ -1,3 +1,4 @@
+import { randomUUID } from 'node:crypto';
 import type { JobOpportunity } from '../src/types';
 import { INITIAL_JOBS } from '../src/data/jobsData';
 
@@ -63,7 +64,7 @@ function toJob(source: Record<string, unknown>): JobOpportunity {
   const locationParts = Array.isArray(rawLocation?.display_name) ? rawLocation.display_name : [];
 
   return {
-    id: text(source.id) || text(source.redirect_url) || crypto.randomUUID(),
+    id: text(source.id) || text(source.redirect_url) || randomUUID(),
     title: text(source.title) || 'Untitled position',
     company: text((source.company as Record<string, unknown> | undefined)?.display_name) || 'Company not listed',
     location: locationParts.filter((part): part is string => typeof part === 'string').join(', ') || 'Location not listed',
