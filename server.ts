@@ -13,7 +13,7 @@ const app = express();
  * ResumeIQ backend runs on port 3005.
  * Frontend Vite (/api proxy) also points to port 3005.
  */
-const PORT = 3005;
+const PORT = Number(process.env.PORT) || 3005;
 const HOST = '0.0.0.0';
 
 app.use(express.json({ limit: '25mb' }));
