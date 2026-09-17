@@ -1,0 +1,11 @@
+[35msrc/components/JobDetailsForm.tsx[m[36m:[m[32m6[m[36m:[m  [1;31mjobTitle[m: string;
+[35msrc/components/JobDetailsForm.tsx[m[36m:[m[32m16[m[36m:[m  [1;31mjobTitle[m,
+[35msrc/components/JobDetailsForm.tsx[m[36m:[m[32m56[m[36m:[m            value={[1;31mjobTitle[m}
+[35msrc/components/JobDetailsForm.tsx[m[36m:[m[32m120[m[36m:[m                <span>{preset.[1;31mjobTitle[m}</span>
+[35msrc/components/results/ScoreBreakdown.tsx[m[36m:[m[32m36[m[36m:[m    { key: '[1;31mjobTitle[mAlignment', icon: <Briefcase className="w-4 h-4 text-indigo-600" /> },
+[35msrc/data/sampleData.ts[m[36m:[m[32m4[m[36m:[m  [1;31mjobTitle[m: string;
+[35msrc/data/sampleData.ts[m[36m:[m[32m14[m[36m:[m    [1;31mjobTitle[m: 'Senior Frontend Developer',
+[35msrc/data/sampleData.ts[m[36m:[m[32m89[m[36m:[m    [1;31mjobTitle[m: 'Product Manager',
+[35msrc/services/localAnalyzer.ts[m[36m:[m[32m227[m[36m:[m    [1;31mjobTitle[mAlignment: {
+[35msrc/services/localAnalyzer.ts[m[36m:[m[32m277[m[36m:[m    (categoryScores.[1;31mjobTitle[mAlignment.score * 0.10) +
+[35msrc/types.ts[m[36m:[m[32m17[m[36m:[m  [1;31mjobTitle[mAlignment: CategoryScoreItem;

@@ -116,3 +116,27 @@ export interface UploadedResumeFile {
   content: string; // extracted text or sample text
   base64Data?: string;
 }
+
+export type JobType = 'Full-time' | 'Part-time' | 'Remote' | 'Hybrid' | 'Contract';
+
+export interface JobOpportunity {
+  id: string;
+  title: string;
+  company: string;
+  companyLogoText?: string;
+  location: string;
+  jobType: JobType;
+  salaryRange?: string;
+  experienceLevel?: string;
+  postedDate?: string;
+  matchPercentage: number;
+  requiredSkills: string[];
+  matchedSkills?: string[];
+  description: string;
+  responsibilities?: string[];
+  qualifications?: string[];
+  benefits?: string[];
+  department?: string;
+  applicationUrl?: string;
+  redirectUrl?: string;
+}

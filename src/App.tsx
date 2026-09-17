@@ -1,60 +1,56 @@
-import React from 'react';
-import { BrowserRouter, Routes, Route, useLocation, useNavigate } from 'react-router-dom';
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 
-import HomePage from './pages/Homepage';
-import HowItWorksPage from './pages/HowItWorks';
-import FeaturesPage from './pages/Features';
-import ATSTipsPage from './pages/ATSTips';
-import { Navbar } from './components/Navbar';
-import { Footer } from './components/Footer';
+import Navbar from "./components/Navbar";
+import Footer from "./components/Footer";
 
-const AppContent: React.FC = () => {
-  const navigate = useNavigate();
-  const location = useLocation();
+import Homepage from "./pages/Homepage";
+import HowItWorks from "./pages/HowItWorks";
+import Features from "./pages/Features";
+import ATSTips from "./pages/ATSTips";
+import { JobsPage } from "./pages/JobsPage";
 
-  const handleAnalyzeClick = () => {
-    if (location.pathname !== '/') {
-      navigate('/');
-      window.setTimeout(() => {
-        document.getElementById('analyzer')?.scrollIntoView({ behavior: 'smooth' });
-      }, 0);
-      return;
-    }
-
-    document.getElementById('analyzer')?.scrollIntoView({ behavior: 'smooth' });
-  };
-
+function App() {
   return (
-    <div className="min-h-screen bg-slate-50 flex flex-col">
-      <div className="no-print">
-        <Navbar onAnalyzeClick={handleAnalyzeClick} />
-      </div>
+    <BrowserRouter>
+      <div className="min-h-screen bg-white text-gray-900">
 
-      <Routes>
-        {/* Home Page */}
-        <Route path="/" element={<HomePage />} />
+        <Navbar />
 
-        {/* How It Works Page */}
-        <Route path="/how-it-works" element={<HowItWorksPage />} />
+        <main>
+          <Routes>
 
-        {/* Features Page */}
-        <Route path="/features" element={<FeaturesPage />} />
+            {/* Home */}
+            <Route path="/" element={<Homepage />} />
 
-        {/* ATS Tips Page */}
-        <Route path="/ats-tips" element={<ATSTipsPage />} />
-      </Routes>
+            {/* Separate Pages */}
+            <Route
+              path="/how-it-works"
+              element={<HowItWorks />}
+            />
 
-      <div className="no-print mt-auto">
+            <Route
+              path="/features"
+              element={<Features />}
+            />
+
+            <Route
+              path="/ats-tips"
+              element={<ATSTips />}
+            />
+
+            <Route
+              path="/jobs"
+              element={<JobsPage />}
+            />
+
+          </Routes>
+        </main>
+
         <Footer />
-      </div>
-    </div>
-  );
-};
 
-const App: React.FC = () => (
-  <BrowserRouter>
-    <AppContent />
-  </BrowserRouter>
-);
+      </div>
+    </BrowserRouter>
+  );
+}
 
 export default App;
